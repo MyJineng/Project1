@@ -1,9 +1,6 @@
 # Project1
 # Team: 
-Amato, Andrew
-Gabriel, Christina
-Lopez rodriguez, Gerardo
-Schiffner, Steven
+Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner, Steven
 ### Analyses to be done
 1. Take social media statistics by country and generate scatter plots with different population statistics (Christina)
 	i. Merge (1), (2), and (3) on "country" (and potentially more if we want to)
