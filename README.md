@@ -1,6 +1,5 @@
-# Project1
-# Team: 
-Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner, Steven
+# Probing Social Media Usage
+Team: Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner, Steven
 ### Analyses to be done
 1. Take social media statistics by country and generate scatter plots with different population statistics (Christina)
 	i. Merge (1), (2), and (3) on "country" (and potentially more if we want to)
@@ -21,3 +20,4 @@ Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner, Steve
 	iii. Groupby (5) on "country," get count for each one, create a new column equal to count divided by 1000, format as percent
 	iv. Remove all countries from (1) that are not present in (5)
 	v. Create a chart comparing this data (double bar graph or line graph)
+	Outcome: There are no releationships between share of top influencers and share of usage of a given social media platform. Although, the US dominates top social media users, there are some outliers such as South Korea (2nd) for Instagram and India (1st) for Youtube. Tiktok has a more dispursed distribution than Instagram and Youtube. The market share of a social media platform does not seem to have an effect on the suicide rate, although Tiktok users as a % of social media users vs the suicide rtae has an R value of -0.56.
