@@ -38,6 +38,7 @@ print("New Current Working Directory:", os.getcwd())
 GDP_csv = Path("Data\\GDP per capita (constant 2015 US$).csv")
 age_csv = Path("Data\\age.csv")
 social_media_csv = Path("Data\\social-media-users-by-country-2024.csv") 
+pop_csv = Path("Data\\pop.csv")
 
 
 # In[5]:
@@ -99,49 +100,71 @@ SM_data
 # In[8]:
 
 
-# Combine the data into a single DataFrame
-merged_df = GDP_data.merge(age_data, how="inner", on=["Country"]).merge(SM_data, how="inner", on=["Country"])
+# Generate population DataFrame from csv file
+raw_pop_data = pd.read_csv(pop_csv, encoding='unicode_escape')
 
-# Convert columns to numeric types
-merged_df["Social Media Users"] = pd.to_numeric(merged_df["Social Media Users"], errors='coerce')
-merged_df["GDP per capita"] = pd.to_numeric(merged_df["GDP per capita"], errors='coerce')
+# Remove unnecessary columns
+raw_pop_data = raw_pop_data[["Country (or dependency)", "Population"]]
 
-# Display the data table for preview
-merged_df.head()
+# Remove invalid entries (NaN)
+pop_data = raw_pop_data.dropna()
+
+# Rename columns
+pop_data = raw_pop_data.rename(columns={"Country (or dependency)": f"Country",
+                                          "Population": f"Population"})
+
+# Remove the row at index 1 using iloc
+pop_data = pop_data.drop(pop_data.index[0])
+
+pop_data
 
 
 # In[9]:
 
 
-print(merged_df.dtypes)
+# Combine the data into a single DataFrame
+merged_df = GDP_data.merge(age_data, how="inner", on=["Country"]).merge(SM_data, how="inner", on=["Country"]).merge(pop_data, how="inner", on=["Country"])
+
+# Convert columns to numeric types
+merged_df["Social Media Users"] = pd.to_numeric(merged_df["Social Media Users"], errors='coerce')
+merged_df["GDP per capita"] = pd.to_numeric(merged_df["GDP per capita"], errors='coerce')
+
+
+# Convert columns to numbers
+merged_df["Population"] = merged_df["Population"].replace({'\$':'',',':''}, regex = True)
+merged_df["Population"] = merged_df["Population"].astype(int)
+
+
+# Display the data table for preview
+merged_df.head()
 
 
 # In[10]:
 
 
-# Drop rows with missing values
-merged_df.dropna(subset=["Social Media Users", "GDP per capita", "Median Age"], inplace=True)
-merged_df
+# # Add a column for percentage of total population on Social Media Users
+# # SM_data_complete = merged_df.merge(SM_data, how="inner", on="Country")
+
+# SM_data_complete["% of Population"] = SM_data["Social Media Users"]/pop_data["Population"]
+
+# SM_data_complete.head()
 
 
 # In[11]:
 
 
-# # Check dimensions of the arrays
-# print("Social Media Users array length:", len(merged_df["Social Media Users"]))
-# print("GDP per capita array length:", len(merged_df["GDP per capita"]))
-
-# # Ensure data alignment and matching dimensions
-# if len(merged_df["Social Media Users"]) == len(merged_df["GDP per capita"]):
-#     # Calculate line of best fit
-#     (slope, intercept, rvalue, pvalue, stderr) = linregress(merged_df["Social Media Users"], merged_df["GDP per capita"])
-#     regress_values = merged_df["Social Media Users"] * slope + intercept
-#     line_eq = "y = " + str(round(slope, 2)) + "x + " + str(round(intercept, 2))
-# else:
-#     print("Data dimensions do not match. Please align the data before performing linear regression.")
+print(merged_df.dtypes)
 
 
 # In[12]:
+
+
+# Drop rows with missing values
+merged_df.dropna(subset=["Social Media Users", "GDP per capita", "Median Age", "Population"], inplace=True)
+merged_df
+
+
+# In[13]:
 
 
 # Calculate line of best fit
@@ -167,15 +190,17 @@ def create_scatter1 (df, x_value , y_value, coords = (0,0)) :
 
 create_scatter1(merged_df, "Social Media Users", "GDP per capita", (600000000, 200000))
 
+#Analysis:
+    #outliers:
+       #approx. 250,000 GDP and 0 social media users 
+       #approx. 60,000 GDP and 200,000,000 social media users 
+       #approx. 15,000 GDP and 500,000,000 social media users 
+       #approx. 0 GDP and 1,000,000,000 social media users 
+    
+    #most data remained between 100,000 or less GDP per capita and 200,000,000 or less social media users
 
-# In[13]:
 
-
-# SM_GDP = merged_df.loc[(merged_df["GDP per capita"] < 200000) & (merged_df["Social Media Users"] < 200000000)]
-# create_scatter1(SM_GDP, "Social Media Users", "GDP per capita", (600000000, 200000))
-
-
-# In[14]:
+# In[16]:
 
 
 # Calculate line of best fit
@@ -200,4 +225,12 @@ def create_scatter2 (df, x_value2 , y_value2, coords = (0,0)) :
     plt.show()
 
 create_scatter2(merged_df, "Social Media Users", "Median Age", (600000000, 200000))
+
+#Analysis:
+    #outliers:
+       #approx. 58 median age and 0 social media users 
+       #approx. 29 median age and 500,000,000 social media users 
+       #approx. 37 median age and  1,400,000,000 social media users 
+    
+    #most data remained between 50 or less median and 200,000,000 or less social media users
 
