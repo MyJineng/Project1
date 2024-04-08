@@ -5,6 +5,7 @@
 
 
 import os
+import csv 
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -13,12 +14,6 @@ from pathlib import Path
 
 
 # In[2]:
-
-
-pwd
-
-
-# In[3]:
 
 
 # Specify the new directory path
@@ -31,7 +26,7 @@ os.chdir(new_directory)
 print("New Current Working Directory:", os.getcwd())
 
 
-# In[4]:
+# In[3]:
 
 
 # Study data files
@@ -41,7 +36,7 @@ social_media_csv = Path("Data\\social-media-users-by-country-2024.csv")
 pop_csv = Path("Data\\pop.csv")
 
 
-# In[5]:
+# In[4]:
 
 
 # Generate population DataFrame from csv file
@@ -53,14 +48,33 @@ raw_GDP_data = raw_GDP_data[["Country Name", "2022 [YR2022]"]]
 # Remove invalid entries (NaN)
 raw_GDP_data = raw_GDP_data.dropna()
 
+# Specify the name to delete
+name_to_delete = "GNI per capita (constant 2015 US$)"
+
+# Read the CSV file
+with open("Data\\GDP per capita (constant 2015 US$).csv", 'r', newline='') as file:
+    reader = csv.reader(file)
+    data = [row for row in reader if row[0] != name_to_delete]
+
+# Write the filtered data to a new CSV file
+with open("Data\\GDP per capita (constant 2015 US$).csv", 'w', newline='') as new_file:
+    writer = csv.writer(new_file)
+    writer.writerows(data)
 
 GDP_data = raw_GDP_data.rename(columns={"Country Name": f"Country",
                                            "2022 [YR2022]": f"GDP per capita"})
 
-GDP_data
+
+# Convert "GDP per capita" column to numeric values
+GDP_data["GDP per capita"] = pd.to_numeric(GDP_data["GDP per capita"], errors='coerce')
+
+# Filter for GDP values of 20,000 or higher
+GDP_data_final = GDP_data.loc[GDP_data["GDP per capita"] >= 20000]
+
+GDP_data_final.head()
 
 
-# In[6]:
+# In[5]:
 
 
 # Generate age DataFrame from csv file
@@ -75,10 +89,14 @@ raw_age_data = raw_age_data.dropna()
 # Rename columns
 age_data = raw_age_data.rename(columns={"country": f"Country",
                                         "MedianAge2023": f"Median Age"})
-age_data
+
+# Median Age of 20 or higher:
+age_data_final = age_data.loc[age_data["Median Age"] >= 20]
+
+age_data_final 
 
 
-# In[7]:
+# In[6]:
 
 
 # Generate population DataFrame from csv file
@@ -97,7 +115,7 @@ SM_data = raw_SM_data.rename(columns={"country": f"Country",
 SM_data
 
 
-# In[8]:
+# In[7]:
 
 
 # Generate population DataFrame from csv file
@@ -119,11 +137,11 @@ pop_data = pop_data.drop(pop_data.index[0])
 pop_data
 
 
-# In[9]:
+# In[8]:
 
 
 # Combine the data into a single DataFrame
-merged_df = GDP_data.merge(age_data, how="inner", on=["Country"]).merge(SM_data, how="inner", on=["Country"]).merge(pop_data, how="inner", on=["Country"])
+merged_df = GDP_data_final.merge(age_data_final, how="inner", on=["Country"]).merge(SM_data, how="inner", on=["Country"]).merge(pop_data, how="inner", on=["Country"])
 
 # Convert columns to numeric types
 merged_df["Social Media Users"] = pd.to_numeric(merged_df["Social Media Users"], errors='coerce')
@@ -139,32 +157,23 @@ merged_df["Population"] = merged_df["Population"].astype(int)
 merged_df.head()
 
 
-# In[10]:
-
-
-# # Add a column for percentage of total population on Social Media Users
-# # SM_data_complete = merged_df.merge(SM_data, how="inner", on="Country")
-
-# SM_data_complete["% of Population"] = SM_data["Social Media Users"]/pop_data["Population"]
-
-# SM_data_complete.head()
-
-
-# In[11]:
-
-
-print(merged_df.dtypes)
-
-
-# In[12]:
+# In[9]:
 
 
 # Drop rows with missing values
 merged_df.dropna(subset=["Social Media Users", "GDP per capita", "Median Age", "Population"], inplace=True)
-merged_df
+merged_df.head()
 
 
-# In[13]:
+# In[10]:
+
+
+# percentage of total population utilizing social media
+merged_df["% Population"] = merged_df["Social Media Users"] / merged_df["Population"]
+merged_df.head()
+
+
+# In[11]:
 
 
 # Calculate line of best fit
@@ -186,51 +195,36 @@ def create_scatter1 (df, x_value , y_value, coords = (0,0)) :
     plt.xlabel(x_value)
     plt.ylabel(y_value)
     plt.gcf().axes[0].xaxis.get_major_formatter().set_scientific(False)
+    plt.savefig("Chart Images") 
     plt.show()
 
-create_scatter1(merged_df, "Social Media Users", "GDP per capita", (600000000, 200000))
-
-#Analysis:
-    #outliers:
-       #approx. 250,000 GDP and 0 social media users 
-       #approx. 60,000 GDP and 200,000,000 social media users 
-       #approx. 15,000 GDP and 500,000,000 social media users 
-       #approx. 0 GDP and 1,000,000,000 social media users 
-    
-    #most data remained between 100,000 or less GDP per capita and 200,000,000 or less social media users
+create_scatter1(merged_df, "% Population", "GDP per capita", (600000000, 200000))
 
 
-# In[16]:
+# In[12]:
 
 
 # Calculate line of best fit
-def create_scatter2 (df, x_value2 , y_value2, coords = (0,0)) : 
-    (slope, intercept, rvalue, pvalue, stderr) = linregress(df[x_value2], df[y_value2])
-    regress_values = df[x_value2] * slope + intercept
+def create_scatter2 (df, x_value , y_value2, coords = (0,0)) : 
+    (slope, intercept, rvalue, pvalue, stderr) = linregress(df[x_value], df[y_value2])
+    regress_values = df[x_value] * slope + intercept
     line_eq = "y = " + str(round(slope, 2)) + "x + " + str(round(intercept, 2))
     
     
     # Plot data
-    plt.scatter(df[x_value2], df[y_value2])
+    plt.scatter(df[x_value], df[y_value2])
     
     # Add line of best fit
-    plt.plot(df[x_value2],regress_values,"r-")
+    plt.plot(df[x_value],regress_values,"r-")
     plt.annotate(line_eq,coords,fontsize=12,color="red")
     
     # Label chart
-    plt.title(f"{x_value2} vs. {y_value2}")
-    plt.xlabel(x_value2)
+    plt.title(f"{x_value} vs. {y_value2}")
+    plt.xlabel(x_value)
     plt.ylabel(y_value2)
     plt.gcf().axes[0].xaxis.get_major_formatter().set_scientific(False)
+    plt.savefig("Chart Images") 
     plt.show()
 
-create_scatter2(merged_df, "Social Media Users", "Median Age", (600000000, 200000))
-
-#Analysis:
-    #outliers:
-       #approx. 58 median age and 0 social media users 
-       #approx. 29 median age and 500,000,000 social media users 
-       #approx. 37 median age and  1,400,000,000 social media users 
-    
-    #most data remained between 50 or less median and 200,000,000 or less social media users
+create_scatter2(merged_df, "% Population", "Median Age", (600000000, 200000))
 
