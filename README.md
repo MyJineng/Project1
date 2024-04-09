@@ -7,10 +7,7 @@ Team: Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner,
 	iii. Make plots
 	iv. Determine lines of fit etc.
 2. Same thing but for users of YouTube, TikTok, and Instagram (Steven)
-	i. Merge TikTok, Youtube, and IG data for a representative sample of countries with (2), (3), etc
-	ii. Clean
-	iii. Make plots
-	iv. Determine lines of fit etc.
+After merging together different DataFrames containing data for the population, GDP, median age, Facebook usage and TikTok usage for various countries, then cleaning the data to convert it to the proper data type and remove rows with bad entries, I placed the data into scatter plots and performed a linear regression analysis. At first we saw a positive correlation, but after restricting the data to GDPs and median ages above a certain mark in order to remove potential outliers, we saw no correlation almost across the board, except for in the case of TikTok usage vs. median age where we saw a weak negative correlation (r=.55).
 3. Compare internet usage (6) vs. social media usage (7) over time (Gerardo)
 	i. Make tables for year-to-year change in social media & internet usage over time
 	ii. Plot the values together (double-bar graph or line graph) to see if they are similar as hypothesized
