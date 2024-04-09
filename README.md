@@ -11,6 +11,18 @@ This project aims to analyze the trends in internet and social media usage world
 - **Data Analysis**: Examination of year-to-year percentage changes in internet and social media usage.
 - **Visualization**: Generation of plots to visually represent the relationship between internet usage and social media growth over the years.
 
+ ## Findings Overview
+The analysis reveals that internet and social media penetration are closely correlated yet are influenced by a diverse range of factors including economic development, infrastructure availability, and societal norms. Key insights include:
+- A consistent growth in global internet and social media users, with notable year-to-year fluctuations.
+- The impact of global events on internet and social media usage rates.
+- The varying pace of growth between different regions and countries, highlighting the digital divide.
+
+For detailed insights and visualizations, refer to the output of the script which includes plots and tables 
+showing the percentage change in internet and social media usage year-to-year.
+
+
+  
+
   ## Data Sources
 
 - Internet usage data: Provided by the World Bank.
