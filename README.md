@@ -27,6 +27,14 @@ showing the percentage change in internet and social media usage year-to-year.
 
 - Internet usage data: Provided by the World Bank.
 - Social media usage data: BarGraph Globalview
+- World Population Review: users and suicide rate
+  (https://worldpopulationreview.com/country-rankings/social-media-users-by-country)
+  (https://worldpopulationreview.com/country-rankings/instagram-users-by-country)
+  (https://worldpopulationreview.com/country-rankings/tiktok-users-by-country)
+  (https://worldpopulationreview.com/country-rankings/youtube-users-by-country)
+  (https://worldpopulationreview.com/country-rankings/suicide-rate-by-country)
+- Kaggle: top influencers
+  (https://www.kaggle.com/datasets/ramjasmaurya/top-1000-social-media-channels?select=social+media+influencers+-+Tiktok+sep+2022.csv)
 =======
 # Probing Social Media Usage
 Team: Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner, Steven
