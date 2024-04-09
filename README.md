@@ -36,22 +36,33 @@ Team: Amato, Andrew | Gabriel, Christina | Lopez rodriguez, Gerardo | Schiffner,
 	ii. Clean (remove any countries with incomplete or old data)
 	iii. Make plots
 	iv. Determine lines of fit etc.
+
 Extraction, Loading, and Transformation:
 Created new directory path. Loaded in csv files. Cleaned data: removed columns/rows of dataset that were irrelevant, removed invalid entries, removed missing values, converted string values to numeric values, narrowed data by most recent/relevant values. Merged datasets into one single data frame. Calculated percentage of social media users for each country. Created scatterplots with lines of best fit to illustrate correlation between social media usage and GPD/median age. 
+
 Outcome:
 Based on the data, it appears there is a correlation (negative relationship) between the population of social media users and GDP per capita. There is a notable cluster of populations with a GDP between 20,000-105,000 and a social media user population between 0.6%-1.0%. Therefore, it appears countries with a lower GDP had the largest population of social media usage with one significant outlier: Monaco has a large GDP and a very low social media usage. In conclusion, as the social media usage increased, the GDP became lower. Furthermore, it appears there is a correlation (negative relationship) between the population of social media users and median age. There is a notable cluster of age around 37 - 50 years old and a social media user population between 0.6%-0.9%. Therefore, it appears middle-aged age groups have the largest population of social media usage with one significant outlier: population around 55 years old have very low social media usage. In conclusion, most social users appears to be between 30-35 years old.
 
 3. Same thing but for users of YouTube, TikTok, and Instagram (Steven)
-After merging together different DataFrames containing data for the population, GDP, median age, Facebook usage and TikTok usage for various countries, then cleaning the data to convert it to the proper data type and remove rows with bad entries, I placed the data into scatter plots and performed a linear regression analysis. At first we saw a positive correlation, but after restricting the data to GDPs and median ages above a certain mark in order to remove potential outliers, we saw no correlation almost across the board, except for in the case of TikTok usage vs. median age where we saw a weak negative correlation (r=.55).
-4. Compare internet usage (6) vs. social media usage (7) over time (Gerardo)
+   
+Extraction, Loading, and Transformation:
+After merging together different DataFrames containing data for the population, GDP, median age, Facebook usage and TikTok usage for various countries, then cleaning the data to convert it to the proper data type and remove rows with bad entries, I placed the data into scatter plots and performed a linear regression analysis.
+
+Outcome:
+At first we saw a positive correlation, but after restricting the data to GDPs and median ages above a certain mark in order to remove potential outliers, we saw no correlation almost across the board, except for in the case of TikTok usage vs. median age where we saw a weak negative correlation (r=.55).
+
+
+5. Compare internet usage (6) vs. social media usage (7) over time (Gerardo)
 	i. Make tables for year-to-year change in social media & internet usage over time
 	ii. Plot the values together (double-bar graph or line graph) to see if they are similar as hypothesized
-5. Compare share of social media users by country (1) with share of top influencers on a given platform by country (5) (Andrew)
+6. Compare share of social media users by country (1) with share of top influencers on a given platform by country (5) (Andrew)
 	i. Clean both (1) and (5)
 	ii. Calculate overall social media share for each country in (1) - sum up all social media users and then create a new column equal to social media users in a given country divided by worldwide users, format as percent
 	iii. Groupby (5) on "country," get count for each one, create a new column equal to count divided by 1000, format as percent
 	iv. Remove all countries from (1) that are not present in (5)
 	v. Create a chart comparing this data (double bar graph or line graph)
+
 Extraction, Loading, and Transformation: youtube, tiktok, and instagram.csv were loaded and compared against world.csv using a foreloop called mktsmall.csv. Next, the percentage of users using each type of platform was calculated. Then, a csv for each platforms top 1000 influencers was used to create dataframes. The data was then transformed into a count of influencers by country before being merged with mktsmall. Data was sourced from World Population Review (users) and Kaggle (top influencers).
+
 Outcome: There are no releationships between share of top influencers and share of usage of a given social media platform. Although, the US dominates top social media users, there are some outliers such as South Korea (2nd) for Instagram and India (1st) for Youtube. Tiktok has a more dispursed distribution than Instagram and Youtube. The market share of a social media platform does not seem to have an effect on the suicide rate, although Tiktok users as a % of social media users vs the suicide rtae has an R value of -0.56.
 
