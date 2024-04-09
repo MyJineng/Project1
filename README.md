@@ -56,13 +56,8 @@ At first we saw a positive correlation, but after restricting the data to GDPs a
 	ii. Plot the values together (double-bar graph or line graph) to see if they are similar as hypothesized
  
 4.) Compare share of social media users by country (1) with share of top influencers on a given platform by country (5) (Andrew)
-	i. Clean both (1) and (5)
-	ii. Calculate overall social media share for each country in (1) - sum up all social media users and then create a new column equal to social media users in a given country divided by worldwide users, format as percent
-	iii. Groupby (5) on "country," get count for each one, create a new column equal to count divided by 1000, format as percent
-	iv. Remove all countries from (1) that are not present in (5)
-	v. Create a chart comparing this data (double bar graph or line graph)
 
-Extraction, Loading, and Transformation: youtube, tiktok, and instagram.csv were loaded and compared against world.csv using a foreloop called mktsmall.csv. Next, the percentage of users using each type of platform was calculated. Then, a csv for each platforms top 1000 influencers was used to create dataframes. The data was then transformed into a count of influencers by country before being merged with mktsmall. Data was sourced from World Population Review (users) and Kaggle (top influencers).
+Extraction, Loading, and Transformation: youtube, tiktok, and instagram.csv were loaded and compared against world.csv using a foreloop called mktsmall.csv. Next, the percentage of users using each type of platform was calculated. Then, a csv for each platforms top 1000 influencers was used to create dataframes. The data was then transformed into a count of influencers by country before being merged with mktsmall. Data was sourced from World Population Review (users and suicide rate) and Kaggle (top influencers).
 
-Outcome: There are no releationships between share of top influencers and share of usage of a given social media platform. Although, the US dominates top social media users, there are some outliers such as South Korea (2nd) for Instagram and India (1st) for Youtube. Tiktok has a more dispursed distribution than Instagram and Youtube. The market share of a social media platform does not seem to have an effect on the suicide rate, although Tiktok users as a % of social media users vs the suicide rtae has an R value of -0.56.
+Outcome: There are no releationships between share of top influencers and share of usage of a given social media platform. Although, the US dominates top social media users, there are some outliers such as South Korea (2nd) for Instagram and India (1st) for Youtube. Tiktok has a more dispursed distribution than Instagram and Youtube. It is interesting that South Korea has many bands and band members in the top 100 Instagram accounts but does not have a presence in Youtube since many of India's top Youtube channels are also music based. The market share of a social media platform does not seem to have an effect on the suicide rate, although Tiktok users as a % of social media users vs the suicide rtae has an R value of -0.56. 
 
