@@ -55,9 +55,19 @@ At first we saw a positive correlation, but after restricting the data to GDPs a
 	i. Make tables for year-to-year change in social media & internet usage over time
 	ii. Plot the values together (double-bar graph or line graph) to see if they are similar as hypothesized
  
+Extraction, Loading, and Transformation:
+We chose the World Bank data for its reliability and comprehensive coverage of global internet usage. For social media usage, we gathered data reflecting the number of users worldwide from reputable sources. Our Python code played a crucial role in cleaning and preparing this data for analysis. We focused on the years 2014 to 2022 to capture recent trends and used Pandas for data manipulation and Matplotlib for visualization.
+
+Outcome:
+The analysis reveals that internet and social media penetration are closely correlated yet are influenced by a diverse range of factors including economic development, infrastructure availability, and societal norms. Key insights include:
+A consistent growth in global internet and social media users, with notable year-to-year fluctuations.
+The impact of global events on internet and social media usage rates.
+ 
 4.) Compare share of social media users by country (1) with share of top influencers on a given platform by country (5) (Andrew)
 
-Extraction, Loading, and Transformation: youtube, tiktok, and instagram.csv were loaded and compared against world.csv using a foreloop called mktsmall.csv. Next, the percentage of users using each type of platform was calculated. Then, a csv for each platforms top 1000 influencers was used to create dataframes. The data was then transformed into a count of influencers by country before being merged with mktsmall. Data was sourced from World Population Review (users and suicide rate) and Kaggle (top influencers).
+Extraction, Loading, and Transformation: 
+Youtube, tiktok, and instagram.csv were loaded and compared against world.csv using a foreloop called mktsmall.csv. Next, the percentage of users using each type of platform was calculated. Then, a csv for each platforms top 1000 influencers was used to create dataframes. The data was then transformed into a count of influencers by country before being merged with mktsmall. Data was sourced from World Population Review (users and suicide rate) and Kaggle (top influencers).
 
-Outcome: There are no releationships between share of top influencers and share of usage of a given social media platform. Although, the US dominates top social media users, there are some outliers such as South Korea (2nd) for Instagram and India (1st) for Youtube. Tiktok has a more dispursed distribution than Instagram and Youtube. It is interesting that South Korea has many bands and band members in the top 100 Instagram accounts but does not have a presence in Youtube since many of India's top Youtube channels are also music based. The market share of a social media platform does not seem to have an effect on the suicide rate, although Tiktok users as a % of social media users vs the suicide rtae has an R value of -0.56. 
+Outcome: 
+There are no releationships between share of top influencers and share of usage of a given social media platform. Although, the US dominates top social media users, there are some outliers such as South Korea (2nd) for Instagram and India (1st) for Youtube. Tiktok has a more dispursed distribution than Instagram and Youtube. It is interesting that South Korea has many bands and band members in the top 100 Instagram accounts but does not have a presence in Youtube since many of India's top Youtube channels are also music based. The market share of a social media platform does not seem to have an effect on the suicide rate, although Tiktok users as a % of social media users vs the suicide rtae has an R value of -0.56. 
 
