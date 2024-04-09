@@ -228,3 +228,101 @@ def create_scatter2 (df, x_value , y_value2, coords = (0,0)) :
 
 create_scatter2(merged_df, "% Population", "Median Age", (600000000, 200000))
 
+#Andrew
+#Loading Data
+path = r'..\country_data'
+mktsmall = pd.read_csv(rf'{path}\facebook.csv')
+csvs = ['youtube', 'tiktok', 'world', 'instagram']
+for x in csvs:
+    csv = pd.read_csv(f'{path}\{x}.csv')
+    tdf = pd.DataFrame(csv)
+    mktsmall = mktsmall.merge(tdf, how='inner', on="country")
+
+# creating new columns
+mktsmall["tiktok %"] = round((mktsmall['TikTokUsersCountryTotal2023'] / mktsmall["users"] * 100), 2)
+mktsmall["youtube %"] = round((mktsmall['YouTubeUsersJuly2023'] / mktsmall["users"] * 100), 2)
+mktsmall["facebook %"] = round((mktsmall['FacebookUsersTotal2023'] / mktsmall["users"] * 100), 2)
+mktsmall["instagram %"] = round((mktsmall['InstagramUsers2023'] / mktsmall["users"] * 100), 2)
+# data frames used for plots later
+plotdf = mktsmall[["instagram %", "country"]]
+plotbdf = mktsmall[["tiktok %", "country"]]
+
+# resetting index so influencers by country of origin is a colunn
+idf = pd.read_csv(rf'{path}\top_1000_instagramers.csv')
+idf = idf["country"].value_counts().reset_index()
+idf = idf.rename(columns={'country': 'insta_influencers', 'index': 'country', })
+
+# Bargraphs of influencers by country
+plot = idf.plot(kind="bar", figsize=(20, 5))
+plot.set_xticklabels(idf["country"], rotation=45)
+plt.title("Top 100 Instagram Influencers by Country")
+plt.xlabel("Country")
+plt.tight_layout()
+plt.show()
+
+tdf = pd.read_csv(rf'{path}\top_1000_tiktok.csv')
+tdf = tdf["country"].value_counts().reset_index()
+tdf = tdf.rename(columns={'country': 'tiktok_influencers', 'index': 'country', })
+
+plot = tdf.plot(kind="bar", figsize=(20, 5))
+plot.set_xticklabels(tdf["country"], rotation=45)
+plt.title("Top 100 Tiktok Influencers by Country")
+plt.xlabel("Country")
+plt.tight_layout()
+plt.show()
+
+ydf = pd.read_csv(rf'{path}\top_1000_yt.csv')
+ydf = ydf["country"].value_counts().reset_index()
+ydf = ydf.rename(columns={'country': 'yt_influencers', 'index': 'country', })
+
+plot = ydf.plot(kind="bar", figsize=(20, 5))
+plot.set_xticklabels(ydf["country"], rotation=45)
+plt.title("Top 100 Youtube Influencers by Country")
+plt.xlabel("Country")
+plt.tight_layout()
+plt.show()
+
+# mergeing dataframes to get side by side view of countries amount of influencers and market share of total SM users
+mktsmall = mktsmall.merge(idf, how='outer', on="country")
+mktsmall = mktsmall[['country', 'instagram %', "tiktok %", "youtube %", 'insta_influencers']]
+mktsmall = mktsmall.merge(tdf, how='outer', on="country")
+mktsmall = mktsmall[['country', 'instagram %', "tiktok %", "youtube %", 'insta_influencers', 'tiktok_influencers']]
+mktsmall = mktsmall.merge(ydf, how='inner', on="country")
+mktsmall = mktsmall[
+    ['country', 'instagram %', "tiktok %", "youtube %", 'insta_influencers', 'tiktok_influencers', 'yt_influencers', ]]
+# bargraph
+mktsmall = mktsmall.drop(index=[11, 12])
+multi_plot = mktsmall.plot(kind="bar", figsize=(20, 5))
+multi_plot.set_xticklabels(mktsmall["country"], rotation=45)
+plt.title("Top 100 Influencers by Country")
+
+# scatterplots comparing amount of market share by platform to amount of top influencers
+plotadf = plotdf.merge(idf, how='outer', on="country")
+plotadf.plot.scatter(x='instagram %', y='insta_influencers', s=100, edgecolor="red");
+plt.title("Instagram Usage and Market Share of all Users")
+plt.scatter(plotadf["instagram %"], plotadf["insta_influencers"])
+plt.show()
+
+# Regression lines to find R values
+sdf = pd.read_csv(rf'{path}\srate.csv')
+plotadf = plotdf.merge(sdf, how='inner', on="country")
+(slope, intercept, rvalue, pvalue, stderr) = linregress(plotadf['instagram %'], plotadf["suicide_rate"])
+regress_values = plotadf["instagram %"] * slope + intercept
+print(f'Instagram users as a % of social media users vs suicide R value: {rvalue.round(2)}')
+plotbdf = plotbdf.merge(sdf, how='inner', on="country")
+
+(slope, intercept, rvalue, pvalue, stderr) = linregress(plotbdf['tiktok %'], plotbdf["suicide_rate"])
+regress_values = plotbdf["tiktok %"] * slope + intercept
+print(f'Tiktok users as a % of social media users vs suicide R value: {rvalue.round(2)}')
+
+# Final scatterplots comparing ssocial media market share to amount of top influencers
+idf = idf.merge(sdf, how='inner', on="country")
+idf.plot.scatter(x='suicide_rate', y='insta_influencers', s=100, edgecolor="red");
+plt.title("Instagram vs Suicide")
+ydf = ydf.merge(sdf, how='inner', on="country")
+ydf.plot.scatter(x='suicide_rate', y='yt_influencers', s=100, edgecolor="red");
+plt.title("Youtube vs Suicide")
+tdf = tdf.merge(sdf, how='inner', on="country")
+tdf.plot.scatter(x='suicide_rate', y='tiktok_influencers', s=100, edgecolor="red");
+plt.title("TikTok vs Suicide")
+plt.show()
